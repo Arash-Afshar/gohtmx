@@ -1,0 +1,8 @@
+<ul>
+    {{ range $sample := $.Samples }}
+    <li>
+        {{ $sample.Name }}
+        <button hx-delete="/api/sample/{{ $sample.Name }}" hx-target="#samples">Delete</button>
+    </li>
+    {{ end }}
+</ul>
