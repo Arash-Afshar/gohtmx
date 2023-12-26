@@ -1,6 +1,7 @@
 setup:
 	npm install
 	npm install -D tailwindcss
+	go install github.com/cosmtrek/air@latest
 
 dev:
 	air -c .air.toml
