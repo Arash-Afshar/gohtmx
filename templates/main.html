@@ -9,7 +9,7 @@
     {{ block "meta" . }}{{ end }}
     <link href="/static/styles.css" rel="stylesheet">
     {{ block "styles" .}}{{ end }}
-    <script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -21,7 +21,7 @@
     </script>
 </head>
 
-<body hx-boost="true">
+<body hx-boost="true" class="p-5 bg-white dark:bg-gray-900 antialiased">
     {{ block "content" . }}{{ end }}
     {{ block "scripts" . }}{{ end }}
 </body>
