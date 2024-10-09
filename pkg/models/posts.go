@@ -4,11 +4,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type Scanner[T any] interface {
-	*T
-	Scan() []any
-}
-
 type Post struct {
 	Id      string
 	Title   string
