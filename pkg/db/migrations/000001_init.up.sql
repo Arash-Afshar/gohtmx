@@ -1,11 +1,12 @@
 CREATE TABLE IF NOT EXISTS "samples" (
-	"id"   INTEGER NOT NULL UNIQUE,
+	"id"   TEXT NOT NULL UNIQUE,
 	"name" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	PRIMARY KEY("id")
 );
 
 CREATE TABLE IF NOT EXISTS "posts" (
 	"id"   TEXT NOT NULL UNIQUE,
-	"title" TEXT
+	"title" TEXT,
+	PRIMARY KEY("id")
 );
 

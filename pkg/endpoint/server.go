@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log/slog"
+	"net/http"
 	"path/filepath"
 
 	"github.com/Arash-Afshar/gohtmx/pkg/db"
@@ -103,4 +105,18 @@ func Run() error {
 
 	e.Logger.Fatal(e.Start(config.Address))
 	return nil
+}
+
+func isHtmx(c echo.Context) bool {
+	w := c.Response()
+	r := c.Request()
+	// Check, if the current request has a 'HX-Request' header.
+	// For more information, see https://htmx.org/docs/#request-headers
+	if r.Header.Get("HX-Request") == "" || r.Header.Get("HX-Request") != "true" {
+		// If not, return HTTP 400 error.
+		w.WriteHeader(http.StatusBadRequest)
+		slog.Error("request API", "method", r.Method, "status", http.StatusBadRequest, "path", r.URL.Path)
+		return false
+	}
+	return true
 }
