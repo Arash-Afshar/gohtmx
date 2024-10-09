@@ -14,12 +14,6 @@ func NewDB(path string) (*sql.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("openning connection: %v", err)
 	}
-	if _, err = db.Exec(createSamplesTable); err != nil {
-		return nil, fmt.Errorf("creating tables: %v", err)
-	}
-	if err = CreatePostsTable(context.Background(), db); err != nil {
-		return nil, fmt.Errorf("creating tables: %v", err)
-	}
 	return db, nil
 }
 

@@ -8,14 +8,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func CreatePostsTable(ctx context.Context, db *sql.DB) error {
-	return Exec(ctx, db, `
-CREATE TABLE IF NOT EXISTS "posts" (
-	"id"   TEXT NOT NULL UNIQUE,
-	"title" TEXT
-);`)
-}
-
 func AddPost(ctx context.Context, db *sql.DB, post *models.Post) error {
 	return Exec(ctx, db, `INSERT INTO posts(id, title) VALUES (?, ?)`, post.Id, post.Title)
 }

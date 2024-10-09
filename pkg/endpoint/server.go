@@ -20,7 +20,7 @@ type Handler struct {
 
 type Config struct {
 	Address string `env:"GOHTMX_BACKEND_HOST" envDefault:"127.0.0.1:7000"`
-	DbURL   string `env:"GOHTMX_BACKEND_DB_URL" envDefault:"sample.sqlite"`
+	DbURL   string `env:"GOHTMX_BACKEND_DB_URL" envDefault:"db.sqlite"`
 }
 
 type Templates struct {

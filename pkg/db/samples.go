@@ -8,16 +8,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const createSamplesTable string = `
-CREATE TABLE IF NOT EXISTS "sample" (
-	"id"   INTEGER NOT NULL UNIQUE,
-	"name" TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-`
-
 func AddSample(db *sql.DB, sample *models.Sample) error {
-	sqlString := `INSERT INTO sample(name) VALUES (?)`
+	sqlString := `INSERT INTO samples(name) VALUES (?)`
 	statement, err := db.Prepare(sqlString)
 	if err != nil {
 		return fmt.Errorf("preparing %s: %v", sqlString, err)
@@ -34,7 +26,7 @@ func AddSample(db *sql.DB, sample *models.Sample) error {
 }
 
 func SampleByName(db *sql.DB, name string) (*models.Sample, error) {
-	sqlString := `SELECT id FROM sample WHERE name = ?`
+	sqlString := `SELECT id FROM samples WHERE name = ?`
 	statement, err := db.Prepare(sqlString)
 	if err != nil {
 		return nil, fmt.Errorf("preparing %s: %v", sqlString, err)
@@ -56,7 +48,7 @@ func SampleByName(db *sql.DB, name string) (*models.Sample, error) {
 }
 
 func DeleteSample(db *sql.DB, sample *models.Sample) error {
-	sqlString := `DELETE FROM sample WHERE id = ?`
+	sqlString := `DELETE FROM samples WHERE id = ?`
 	statement, err := db.Prepare(sqlString)
 	if err != nil {
 		return fmt.Errorf("preparing %s: %v", sqlString, err)
@@ -69,7 +61,7 @@ func DeleteSample(db *sql.DB, sample *models.Sample) error {
 }
 
 func ListSamples(db *sql.DB) ([]*models.Sample, error) {
-	sqlString := `SELECT id, name FROM sample`
+	sqlString := `SELECT id, name FROM samples`
 	rows, err := db.Query(sqlString)
 	if err != nil {
 		return nil, fmt.Errorf("preparing %s: %v", sqlString, err)
