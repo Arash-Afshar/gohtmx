@@ -26,7 +26,8 @@ func (h *Handler) createPost(c echo.Context) error {
 		return nil
 	}
 	title := c.FormValue("title")
-	post := models.NewPost(title)
+	content := c.FormValue("content")
+	post := models.NewPost(title, content)
 	if err := db.AddPost(c.Request().Context(), h.DB, post); err != nil {
 		slog.Error("createPost", "err", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
 		return c.Render(http.StatusInternalServerError, "pages/error.html", DisplayError{Message: err.Error()})

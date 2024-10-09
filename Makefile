@@ -17,6 +17,7 @@ create_migration:
 migrate_up:
 	migrate -path pkg/db/migrations -database "sqlite3://db.sqlite" -verbose up
 
+# Example: make migrate_down count=1 to rollback the last migration
 migrate_down:
-	migrate -path pkg/db/migrations -database "sqlite3://db.sqlite" -verbose down
+	migrate -path pkg/db/migrations -database "sqlite3://db.sqlite" -verbose down $(count)
 

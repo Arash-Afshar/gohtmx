@@ -10,17 +10,19 @@ type Scanner[T any] interface {
 }
 
 type Post struct {
-	Id    string
-	Title string
+	Id      string
+	Title   string
+	Content string
 }
 
 func (p *Post) Scan() []any {
-	return []any{&p.Id, &p.Title}
+	return []any{&p.Id, &p.Title, &p.Content}
 }
 
-func NewPost(title string) *Post {
+func NewPost(title string, content string) *Post {
 	return &Post{
-		Id:    uuid.New().String(),
-		Title: title,
+		Id:      uuid.New().String(),
+		Title:   title,
+		Content: content,
 	}
 }

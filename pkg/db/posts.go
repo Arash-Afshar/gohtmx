@@ -9,7 +9,7 @@ import (
 )
 
 func AddPost(ctx context.Context, db *sql.DB, post *models.Post) error {
-	return Exec(ctx, db, `INSERT INTO posts(id, title) VALUES (?, ?)`, post.Id, post.Title)
+	return Exec(ctx, db, `INSERT INTO posts(id, title, content) VALUES (?, ?, ?)`, post.Id, post.Title, post.Content)
 }
 
 func DeletePost(ctx context.Context, db *sql.DB, post *models.Post) error {
@@ -17,9 +17,9 @@ func DeletePost(ctx context.Context, db *sql.DB, post *models.Post) error {
 }
 
 func ListPosts(ctx context.Context, db *sql.DB) ([]models.Post, error) {
-	return QueryScanMany[models.Post](ctx, db, "SELECT id, title FROM posts")
+	return QueryScanMany[models.Post](ctx, db, "SELECT id, title, content FROM posts")
 }
 
 func FindPost(ctx context.Context, db *sql.DB, id string) (*models.Post, error) {
-	return QueryScanOne[models.Post](ctx, db, "SELECT id, title FROM posts WHERE id = ?", id)
+	return QueryScanOne[models.Post](ctx, db, "SELECT id, title, content FROM posts WHERE id = ?", id)
 }
