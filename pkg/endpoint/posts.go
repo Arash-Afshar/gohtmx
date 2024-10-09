@@ -10,13 +10,13 @@ import (
 )
 
 func (h *Handler) listPost(c echo.Context) error {
-	posts, err := db.ListPosts(h.DB)
+	posts, err := db.ListPosts(c.Request().Context(), h.DB)
 	if err != nil {
 		slog.Error("Getting samples list", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
 		return c.Render(http.StatusInternalServerError, "pages/error.html", DisplayError{Message: err.Error()})
 	}
 	type data struct {
-		Posts []*models.Post
+		Posts []models.Post
 	}
 	return c.Render(http.StatusOK, "pages/posts.html", data{Posts: posts})
 }
@@ -27,7 +27,7 @@ func (h *Handler) createPost(c echo.Context) error {
 	}
 	title := c.FormValue("title")
 	post := models.NewPost(title)
-	if err := db.AddPost(h.DB, post); err != nil {
+	if err := db.AddPost(c.Request().Context(), h.DB, post); err != nil {
 		slog.Error("createPost", "err", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
 		return c.Render(http.StatusInternalServerError, "pages/error.html", DisplayError{Message: err.Error()})
 	}
@@ -39,12 +39,12 @@ func (h *Handler) deletePost(c echo.Context) error {
 		return nil
 	}
 	id := c.Param("id")
-	post, err := db.FindPost(h.DB, id)
+	post, err := db.FindPost(c.Request().Context(), h.DB, id)
 	if err != nil {
 		slog.Error("Find the sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
 		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
 	}
-	if err := db.DeletePost(h.DB, post); err != nil {
+	if err := db.DeletePost(c.Request().Context(), h.DB, post); err != nil {
 		slog.Error("Delete a sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
 		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
 	}
