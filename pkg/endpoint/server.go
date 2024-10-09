@@ -75,15 +75,19 @@ func NewTemplates() *Templates {
 	}
 }
 
+type DisplayError struct {
+	Message string
+}
+
 func Run() error {
 	config := Config{}
 	if err := env.Parse(&config); err != nil {
 		panic(err)
 	}
 
-	router := echo.New()
-	router.Renderer = NewTemplates()
-	router.Use(middleware.Logger())
+	e := echo.New()
+	e.Renderer = NewTemplates()
+	e.Use(middleware.Logger())
 
 	var err error
 	dbInstance, err := db.NewDB(config.DbURL)
@@ -94,12 +98,9 @@ func Run() error {
 	h := Handler{DB: dbInstance}
 
 	// Handle pages
-	router.Static("/static", "static")
-	router.GET("/", h.indexViewHandler)
-	router.GET("/api/sample", h.apiListSampleHandler)
-	router.POST("/api/sample", h.apiNewSampleHandler)
-	router.DELETE("/api/sample/:name", h.apiDeleteSampleHandler)
+	e.Static("/static", "static")
+	routes(e, h)
 
-	router.Logger.Fatal(router.Start(config.Address))
+	e.Logger.Fatal(e.Start(config.Address))
 	return nil
 }

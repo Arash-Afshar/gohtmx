@@ -6,6 +6,7 @@ require github.com/alecthomas/kong v0.8.1
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
+	github.com/google/uuid v1.6.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/mattn/go-sqlite3 v1.14.18
 )
