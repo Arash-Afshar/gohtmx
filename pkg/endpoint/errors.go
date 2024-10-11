@@ -16,7 +16,7 @@ func customHTTPErrorHandler(err error, c echo.Context) {
 	if he, ok := err.(*echo.HTTPError); ok {
 		code = he.Code
 	}
-	c.Logger().Error(err)
+	c.Logger().Errorf("err=[%v], method=[%s], status=[%d], path=[%s]", err, c.Request().Method, code, c.Request().URL.Path)
 
 	if c.Render(code, "pages/error.html", displayError{Message: err.Error()}); err != nil {
 		c.Logger().Error(err)
