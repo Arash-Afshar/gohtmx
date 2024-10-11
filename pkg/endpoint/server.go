@@ -12,6 +12,7 @@ import (
 
 	"github.com/Arash-Afshar/gohtmx/pkg/db"
 	"github.com/caarlos0/env/v10"
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -89,6 +90,9 @@ func Run() error {
 
 	e := echo.New()
 	e.Renderer = NewTemplates()
+	e.HTTPErrorHandler = customHTTPErrorHandler
+	e.Validator = &CustomValidator{validator: validator.New()}
+
 	e.Use(middleware.Logger())
 
 	var err error
@@ -103,7 +107,6 @@ func Run() error {
 	e.Static("/static", "static")
 	routes(e, h)
 
-	e.HTTPErrorHandler = customHTTPErrorHandler
 	e.Logger.Fatal(e.Start(config.Address))
 	return nil
 }

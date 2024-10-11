@@ -10,7 +10,7 @@ import (
 )
 
 type CreatePost struct {
-	Title   string `param:"title" query:"title" form:"title"`
+	Title   string `param:"title" query:"title" form:"title" validate:"required"`
 	Content string `param:"content" query:"content" form:"content"`
 }
 
@@ -38,6 +38,9 @@ func (h *Handler) createPost(c echo.Context) error {
 	err := c.Bind(&p)
 	if err != nil {
 		return c.String(http.StatusBadRequest, "bad request")
+	}
+	if err = c.Validate(p); err != nil {
+		return err
 	}
 	post := models.NewPost(p.Title, p.Content)
 	if err := db.AddPost(c.Request().Context(), h.DB, post); err != nil {
