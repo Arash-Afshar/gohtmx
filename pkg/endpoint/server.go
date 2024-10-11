@@ -77,7 +77,7 @@ func NewTemplates() *Templates {
 	}
 }
 
-type DisplayError struct {
+type displayError struct {
 	Message string
 }
 
@@ -103,6 +103,7 @@ func Run() error {
 	e.Static("/static", "static")
 	routes(e, h)
 
+	e.HTTPErrorHandler = customHTTPErrorHandler
 	e.Logger.Fatal(e.Start(config.Address))
 	return nil
 }

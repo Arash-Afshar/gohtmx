@@ -9,11 +9,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type CreatePost struct {
+	Title   string `param:"title" query:"title" form:"title"`
+	Content string `param:"content" query:"content" form:"content"`
+}
+
+type DeletePost struct {
+	ID string `param:"id" query:"id" form:"id"`
+}
+
 func (h *Handler) listPost(c echo.Context) error {
 	posts, err := db.ListPosts(c.Request().Context(), h.DB)
 	if err != nil {
 		slog.Error("Getting samples list", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", DisplayError{Message: err.Error()})
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	type data struct {
 		Posts []models.Post
@@ -25,12 +34,15 @@ func (h *Handler) createPost(c echo.Context) error {
 	if !isHtmx(c) {
 		return nil
 	}
-	title := c.FormValue("title")
-	content := c.FormValue("content")
-	post := models.NewPost(title, content)
+	var p CreatePost
+	err := c.Bind(&p)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "bad request")
+	}
+	post := models.NewPost(p.Title, p.Content)
 	if err := db.AddPost(c.Request().Context(), h.DB, post); err != nil {
 		slog.Error("createPost", "err", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", DisplayError{Message: err.Error()})
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	return h.listPost(c)
 }
@@ -39,15 +51,19 @@ func (h *Handler) deletePost(c echo.Context) error {
 	if !isHtmx(c) {
 		return nil
 	}
-	id := c.Param("id")
-	post, err := db.FindPost(c.Request().Context(), h.DB, id)
+	var p DeletePost
+	err := c.Bind(&p)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "bad request")
+	}
+	post, err := db.FindPost(c.Request().Context(), h.DB, p.ID)
 	if err != nil {
 		slog.Error("Find the sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	if err := db.DeletePost(c.Request().Context(), h.DB, post); err != nil {
 		slog.Error("Delete a sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	return h.listPost(c)
 }

@@ -17,7 +17,7 @@ func (h *Handler) apiListSampleHandler(c echo.Context) error {
 	samples, err := db.ListSamples(c.Request().Context(), h.DB)
 	if err != nil {
 		slog.Error("Getting samples list", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	type data struct {
 		Samples []models.Sample
@@ -33,7 +33,7 @@ func (h *Handler) apiNewSampleHandler(c echo.Context) error {
 	sample := models.NewSample(name)
 	if err := db.AddSample(c.Request().Context(), h.DB, sample); err != nil {
 		slog.Error("Add a sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	return h.apiListSampleHandler(c)
 }
@@ -46,11 +46,11 @@ func (h *Handler) apiDeleteSampleHandler(c echo.Context) error {
 	sample, err := db.FindSample(c.Request().Context(), h.DB, id)
 	if err != nil {
 		slog.Error("Find the sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	if err := db.DeleteSample(c.Request().Context(), h.DB, sample); err != nil {
 		slog.Error("Delete a sample", "errMessage", err, "method", c.Request().Method, "status", http.StatusInternalServerError, "path", c.Request().URL.Path)
-		return c.Render(http.StatusInternalServerError, "pages/error.html", nil)
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
 	return h.apiListSampleHandler(c)
 }
