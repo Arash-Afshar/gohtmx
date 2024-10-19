@@ -25,10 +25,10 @@ Welcome to example!
                 id="add-name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
-        <button hx-post="/api/sample" hx-target="#samples">Add</button>
+        <button hx-post="/api/samples" hx-target="#samples">Add</button>
     </form>
 
-    <button hx-get="/api/sample" hx-target="#samples">Test Samples List</button>
+    <button hx-get="/api/samples" hx-target="#samples">Test Samples List</button>
     <div id="samples"></div>
 </main>
 {{ end }}

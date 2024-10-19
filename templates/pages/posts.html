@@ -1,0 +1,38 @@
+{{ define "title" }}
+Posts
+{{ end }}
+
+{{ define "content" }}
+<main class="container-xl mx-auto max-w-3xl">
+  <div id="posts">
+    <ul>
+        {{ range $post := $.Posts }}
+        <li>
+            {{ $post.Title }}
+            :
+            {{ $post.Content }}
+            <button hx-delete="/api/posts/{{ $post.Id }}" hx-target="#posts">Delete</button>
+        </li>
+        {{ end }}
+    </ul>
+  </div>
+
+  <form>
+      <label for="add-post-title">New post title</label>
+      <input
+              type="text"
+              name="title"
+              id="add-post-title"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+      <label for="add-post-content">New post content</label>
+      <input
+              type="text"
+              name="content"
+              id="add-post-content"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+      <button hx-post="/api/posts" hx-target="#posts">Add</button>
+  </form>
+</main>
+{{ end }}

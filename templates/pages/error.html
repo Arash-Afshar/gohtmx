@@ -1,0 +1,11 @@
+{{ define "title" }}
+Error
+{{ end }}
+
+{{ define "content" }}
+<main class="container-xl mx-auto max-w-3xl">
+  <div id="error">
+      Error [Debug Mode]: {{ $.Message }}
+  </div>
+</main>
+{{ end }}
